@@ -13,8 +13,6 @@ Requires: WordPress Multisite and The Events Calendar
 if( ! defined( 'ABSPATH' ) )
 	die();
 
-// minor change
-
 class MSE {
 
 	var $prefix = 'mse-';
