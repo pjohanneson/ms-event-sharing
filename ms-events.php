@@ -6,6 +6,7 @@ Plugin Author: Patrick Johanneson
 Author URI: http://patrickjohanneson.com/
 Plugin URI: http://patj.ca/wp/plugins/ms-events
 Description: Provides enhancements to Modern Tribe's "The Events Calendar" plugin for Multisite installations
+Version: 0.1
 License: GPL2
 Requires: WordPress Multisite and The Events Calendar
 */
@@ -20,6 +21,8 @@ class MSE {
 	function __construct() {
 		register_activation_hook( __FILE__, array( $this, 'activation' ) );
 		add_action( 'tribe_settings_do_tabs', array( $this, 'add_mse_settings_tab' ) );
+		add_action( 'save_post', array( $this, 'promote_event' ) );
+		
 	}
 
 	function activation() {
@@ -50,11 +53,9 @@ class MSE {
         ),
         $this->prefix . 'info-box-description' => array(
             'type' => 'html',
-            'html' => sprintf(
-                __('<p>These settings control your Multisite experience.</p>', 'ms-events' ),
-                'https://github.com/moderntribe/tribe-events-agenda-view'
-            ),
+            'html' => '<p>' .  __('These settings control your Multisite experience.', 'ms-events' )  . '</p>',
         ),
+			
         $this->prefix . 'info-end' => array(
             'type' => 'html',
             'html' => '</div>',
@@ -128,8 +129,42 @@ class MSE {
 			echo( $x );
 		}
 	}
+
+
+	/*
+	 * Event Promotion
+	 */
+	
+	/**
+	 * Hooked to save_post -- adds promoted event to root site list
+	 * @param int $post_id The post's ID
+	 * @since 0.1
+	 */
+	function promote_event( $post_id ) {
+		if( ! tribe_is_event() ) {
+			return;
+		}
+		wp_die( $this->prefix );
+		
+		
+	}
+	
+	
+	/*
+	 * Promoted Event Collection
+	 */
+	
+	/*
+	 * Event Demotion
+	 */
+	
+	/*
+	 * TODO
+	 *  - successfully promoted event status match to source event
+	 *    (except publish if a) approval required & b) approval not granted)
+	 *    probably use post_status_transition (?) hook
+	 *  
+	 */
 }
 
-// include( 'tribe-example.php' );
-
-$mse = new MSE();
+new MSE();
