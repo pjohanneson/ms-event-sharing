@@ -95,9 +95,6 @@ class MSE {
 			'fields' => $fields,
 		);
 		new TribeSettingsTab( 'mse', __( 'Multisite', 'multi-site-events' ), $mse_tab );
-
-		// Properly:
-		//  new TribeSettingsTab( 'display', __('Display', 'tribe-events-calendar'), $displayTab );
 		
 	}
 
@@ -116,7 +113,7 @@ class MSE {
 			}
 			$users = $tmp;
 		} else { 
-			$users = array( 0 => 'No admin users found.' );
+			$users = array( 0 => __( 'No admin users found.', 'multi-site-events' ) );
 		}
 		return $users;
 	}
@@ -144,8 +141,42 @@ class MSE {
 		if( ! tribe_is_event() ) {
 			return;
 		}
-		wp_die( $this->prefix );
 		
+		if( BLOG_ID_CURRENT_SITE == get_current_blog_id() ) {
+			// no sense doing this in the root site
+			return;
+		}
+		
+		// inspect the mse-promote-event postmeta
+		$meta_key = $this->prefix . 'promote-event';
+		$promote = get_postmeta( $post_id, $meta_key, $single = true );
+		if( ! $promote ) {
+			return;
+		}
+		
+		// OK, we're sure that this is, in fact, a promotion
+		/*
+		 * CONTINUE FROM HERE 
+		 
+		if( true == $promote ) {
+			// Check to see if automatic promotion is allowed
+			$auto_publish = tribe_get_option();
+			$args = array(
+				
+			);
+			
+			// get the site to return to
+			$go_back = get_current_blog_id();
+			switch_to_blog( BLOG_ID_CURRENT_SITE );
+			
+			$new_event_id = wp_insert_post( $args );
+			
+			switch_to_blog( $go_back );
+			
+		}
+		 * 
+		 */
+		return;
 		
 	}
 	
@@ -157,14 +188,7 @@ class MSE {
 	/*
 	 * Event Demotion
 	 */
-	
-	/*
-	 * TODO
-	 *  - successfully promoted event status match to source event
-	 *    (except publish if a) approval required & b) approval not granted)
-	 *    probably use post_status_transition (?) hook
-	 *  
-	 */
+
 }
 
 new MSE();
