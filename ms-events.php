@@ -177,8 +177,8 @@ class MSE {
 		 * 
 		 */
 		return;
-		
-	}
+
+	} 
 	
 	
 	/*
@@ -187,6 +187,10 @@ class MSE {
 	
 	/*
 	 * Event Demotion
+	 */
+	
+	/*
+	 * Demoted Event Removal
 	 */
 
 }
