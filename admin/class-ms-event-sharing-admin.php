@@ -47,15 +47,9 @@ class MS_Event_Sharing_Admin {
 	 */
 	private function __construct() {
 
-		/*
-		 * @TODO :
-		 *
-		 * - Uncomment following lines if the admin class should only be available for super admins
-		 */
-		/* if( ! is_super_admin() ) {
+		if( ! is_super_admin() ) {
 			return;
-		} */
-
+		}
 		/*
 		 * Call $plugin_slug from public plugin class.
 		 *
@@ -72,7 +66,7 @@ class MS_Event_Sharing_Admin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 
 		// Add the options page and menu item.
-		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
+		add_action( 'network_admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_slug . '.php' );
@@ -175,8 +169,8 @@ class MS_Event_Sharing_Admin {
 		 *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
 		 */
 		$this->plugin_screen_hook_suffix = add_options_page(
-			__( 'Page Title', $this->plugin_slug ),
-			__( 'Menu Text', $this->plugin_slug ),
+			__( 'Multisite Event Sharing', $this->plugin_slug ),
+			__( 'Event Sharing', $this->plugin_slug ),
 			'manage_options',
 			$this->plugin_slug,
 			array( $this, 'display_plugin_admin_page' )
