@@ -168,7 +168,7 @@ class MS_Event_Sharing_Admin {
 		 * - Change 'manage_options' to the capability you see fit
 		 *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
 		 */
-		add_submenu_page(
+		$this->plugin_screen_hook_suffix = add_submenu_page(
 			'settings.php',
 			__( 'Multisite Event Sharing', $this->plugin_slug ),
 			__( 'Event Sharing', $this->plugin_slug ),
